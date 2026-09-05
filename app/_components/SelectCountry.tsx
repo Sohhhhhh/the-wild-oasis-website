@@ -1,11 +1,23 @@
 import { getCountries } from '@/app/_lib/data-service';
+import { Country, FixedCountry } from '@/app/_types';
 
 // Let's imagine your colleague already built this component 😃
 
-async function SelectCountry({ defaultCountry, name, id, className }) {
+async function SelectCountry({
+  defaultCountry,
+  name,
+  id,
+  className,
+}: {
+  defaultCountry: string;
+  name: string;
+  id: string;
+  className: string;
+}) {
   const countries = await getCountries();
   const flag =
-    countries.find((c) => c.name.common === defaultCountry)?.flag ?? '';
+    countries.find((c: Country) => c.name.common === defaultCountry)?.flag ??
+    '';
 
   return (
     <select
@@ -16,7 +28,7 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
       className={className}
     >
       <option value=''>Select country...</option>
-      {countries.map((c) => (
+      {countries.map((c: Country) => (
         <option key={c.name.common} value={`${c.name.common}%${c.flag}`}>
           {c.name.common}
         </option>

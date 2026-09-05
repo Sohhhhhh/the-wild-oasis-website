@@ -1,6 +1,6 @@
 import { eachDayOfInterval } from 'date-fns';
 
-import { Cabin } from '@/app/_types';
+import { Cabin, Country } from '@/app/_types';
 import { supabase } from '@/app/_lib/supabase';
 import { notFound } from 'next/navigation';
 
@@ -95,10 +95,10 @@ export async function getBookings(guestId) {
   return data;
 }
 
-export async function getBookedDatesByCabinId(cabinId) {
-  let today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
-  today = today.toISOString();
+export async function getBookedDatesByCabinId(cabinId: number) {
+  let t = new Date();
+  t.setUTCHours(0, 0, 0, 0);
+  const today = t.toISOString();
 
   // Getting all bookings
   const { data, error } = await supabase
@@ -138,11 +138,14 @@ export async function getSettings() {
 
 export async function getCountries() {
   try {
-    const res = await fetch('https://api.restcountries.com/countries/v5', {
-      headers: {
-        Authorization: `Bearer ${process.env.RESTCOUNTRIES_API_KEY}`,
+    const res = await fetch(
+      'https://api.restcountries.com/countries/v5?limit=100&response_fields=names.common,flag.emoji',
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.RESTCOUNTRIES_API_KEY}`,
+        },
       },
-    });
+    );
 
     const json = await res.json();
     const countries = json.data.objects; // array lives here
