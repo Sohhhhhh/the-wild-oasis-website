@@ -1,8 +1,9 @@
+import { User } from 'next-auth';
+import { notFound } from 'next/navigation';
 import { eachDayOfInterval } from 'date-fns';
 
-import { Cabin, Country } from '@/app/_types';
+import { Cabin } from '@/app/_types';
 import { supabase } from '@/app/_lib/supabase';
-import { notFound } from 'next/navigation';
 
 /////////////
 // GET
@@ -39,7 +40,7 @@ export async function getCabinPrice(id) {
 export const getCabins = async function (): Promise<Cabin[]> {
   const { data, error } = await supabase
     .from('cabins')
-    .select('id, name, maxCapacity, regularPrice, discount, image')
+    .select('id, name, maxCapacity, regularPrice, discount, image,description')
     .order('name');
 
   if (error) {
@@ -51,14 +52,13 @@ export const getCabins = async function (): Promise<Cabin[]> {
 };
 
 // Guests are uniquely identified by their email address
-export async function getGuest(email) {
-  const { data, error } = await supabase
+export async function getGuest(email: string) {
+  const { data } = await supabase
     .from('guests')
     .select('*')
     .eq('email', email)
     .single();
 
-  // No error here! We handle the possibility of no guest in the sign in callback
   return data;
 }
 
@@ -162,7 +162,10 @@ export async function getCountries() {
 /////////////
 // CREATE
 
-export async function createGuest(newGuest) {
+export async function createGuest(newGuest: {
+  email: string;
+  fullName: string;
+}) {
   const { data, error } = await supabase.from('guests').insert([newGuest]);
 
   if (error) {
