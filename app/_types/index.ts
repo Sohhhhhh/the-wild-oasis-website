@@ -22,3 +22,12 @@ export type Settings = {
   minBookingLength: number;
   maxBookingLength: number;
 };
+
+export type Guest = {
+  id: number;
+  fullName: string;
+  email: string;
+  nationalID: string;
+  nationality: string;
+  countryFlag: string;
+};

@@ -2,7 +2,7 @@ import { User } from 'next-auth';
 import { notFound } from 'next/navigation';
 import { eachDayOfInterval } from 'date-fns';
 
-import { Cabin } from '@/app/_types';
+import { Cabin, Guest } from '@/app/_types';
 import { supabase } from '@/app/_lib/supabase';
 
 /////////////
@@ -23,7 +23,7 @@ export async function getCabin(id: number) {
   return data;
 }
 
-export async function getCabinPrice(id) {
+export async function getCabinPrice(id: number) {
   const { data, error } = await supabase
     .from('cabins')
     .select('regularPrice, discount')
@@ -52,7 +52,7 @@ export const getCabins = async function (): Promise<Cabin[]> {
 };
 
 // Guests are uniquely identified by their email address
-export async function getGuest(email: string) {
+export async function getGuest(email: string): Promise<Guest> {
   const { data } = await supabase
     .from('guests')
     .select('*')
@@ -62,7 +62,7 @@ export async function getGuest(email: string) {
   return data;
 }
 
-export async function getBooking(id) {
+export async function getBooking(id: number) {
   const { data, error, count } = await supabase
     .from('bookings')
     .select('*')
@@ -77,7 +77,7 @@ export async function getBooking(id) {
   return data;
 }
 
-export async function getBookings(guestId) {
+export async function getBookings(guestId: number) {
   const { data, error, count } = await supabase
     .from('bookings')
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
@@ -192,6 +192,7 @@ export async function createBooking(newBooking) {
   return data;
 }
 
+/*
 /////////////
 // UPDATE
 
@@ -229,7 +230,7 @@ export async function updateBooking(id, updatedFields) {
 /////////////
 // DELETE
 
-export async function deleteBooking(id) {
+export async function deleteBooking(id: number) {
   const { data, error } = await supabase.from('bookings').delete().eq('id', id);
 
   if (error) {
@@ -238,3 +239,4 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+*/
