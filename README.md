@@ -1,4 +1,4 @@
-# The Wild Oasis
+# The Wild Oasis Website
 
 A public-facing website for The Wild Oasis — a cabin getaway where guests can browse cabins, check availability, and make bookings. This repository contains the Next.js + TypeScript front-end and server code that integrates with Supabase for data and authentication.
 
