@@ -3,10 +3,10 @@
 import { useTransition } from 'react';
 import { TrashIcon } from '@heroicons/react/24/solid';
 
-import { deleteReservation } from '@/app/_lib/actions';
+import { deleteBooking } from '@/app/_lib/actions';
 import SpinnerMini from '@/app/_components/SpinnerMini';
 
-function DeleteReservation({
+export function DeleteReservation({
   bookingId,
   onDelete,
 }: {
@@ -38,4 +38,4 @@ function DeleteReservation({
   );
 }
 
-export default DeleteReservation;
+export default deleteBooking;
