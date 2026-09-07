@@ -31,3 +31,39 @@ export type Guest = {
   nationality: string;
   countryFlag: string;
 };
+
+export type Booking = {
+  id: number;
+  created_at: string;
+  startDate: string;
+  endDate: string;
+  numNights: number;
+  numGuests: number;
+  cabinPrice: number;
+  extrasPrice: number;
+  totalPrice: number;
+  status: string;
+  hasBreakfast: boolean;
+  isPaid: boolean;
+  observations: string;
+  cabinId: number;
+  guestId: number;
+  cabins: {
+    name: string;
+    image: any;
+  } | null;
+};
+
+export type BookingSumm = Pick<
+  Booking,
+  | 'id'
+  | 'created_at'
+  | 'startDate'
+  | 'endDate'
+  | 'numNights'
+  | 'numGuests'
+  | 'totalPrice'
+  | 'guestId'
+  | 'cabinId'
+  | 'cabins'
+>;

@@ -1,14 +1,13 @@
-import { User } from 'next-auth';
 import { notFound } from 'next/navigation';
 import { eachDayOfInterval } from 'date-fns';
 
-import { Cabin, Guest } from '@/app/_types';
+import { Booking, BookingSumm, Cabin, Guest } from '@/app/_types';
 import { supabase } from '@/app/_lib/supabase';
 
 /////////////
 // GET
 
-export async function getCabin(id: number) {
+export async function getCabin(id: number): Promise<Cabin> {
   const { data, error } = await supabase
     .from('cabins')
     .select('*')
@@ -62,7 +61,7 @@ export async function getGuest(email: string): Promise<Guest> {
   return data;
 }
 
-export async function getBooking(id: number) {
+export async function getBooking(id: number): Promise<Booking> {
   const { data, error, count } = await supabase
     .from('bookings')
     .select('*')
@@ -77,7 +76,7 @@ export async function getBooking(id: number) {
   return data;
 }
 
-export async function getBookings(guestId: number) {
+export async function getBookings(guestId: number): Promise<BookingSumm[]> {
   const { data, error, count } = await supabase
     .from('bookings')
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
@@ -92,7 +91,7 @@ export async function getBookings(guestId: number) {
     throw new Error('Bookings could not get loaded');
   }
 
-  return data;
+  return data as unknown as BookingSumm[];
 }
 
 export async function getBookedDatesByCabinId(cabinId: number) {
@@ -176,7 +175,7 @@ export async function createGuest(newGuest: {
   return data;
 }
 
-export async function createBooking(newBooking) {
+export async function createBooking(newBooking: Booking) {
   const { data, error } = await supabase
     .from('bookings')
     .insert([newBooking])
@@ -191,52 +190,3 @@ export async function createBooking(newBooking) {
 
   return data;
 }
-
-/*
-/////////////
-// UPDATE
-
-// The updatedFields is an object which should ONLY contain the updated data
-export async function updateGuest(id, updatedFields) {
-  const { data, error } = await supabase
-    .from('guests')
-    .update(updatedFields)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error(error);
-    throw new Error('Guest could not be updated');
-  }
-  return data;
-}
-
-export async function updateBooking(id, updatedFields) {
-  const { data, error } = await supabase
-    .from('bookings')
-    .update(updatedFields)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error(error);
-    throw new Error('Booking could not be updated');
-  }
-  return data;
-}
-
-/////////////
-// DELETE
-
-export async function deleteBooking(id: number) {
-  const { data, error } = await supabase.from('bookings').delete().eq('id', id);
-
-  if (error) {
-    console.error(error);
-    throw new Error('Booking could not be deleted');
-  }
-  return data;
-}
-*/
