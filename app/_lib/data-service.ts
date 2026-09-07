@@ -147,9 +147,9 @@ export async function getCountries() {
     );
 
     const json = await res.json();
-    const countries = json.data.objects; // array lives here
+    const countries = json.data.objects;
 
-    return countries.map((c) => ({
+    return countries.map((c: any) => ({
       name: { common: c.names.common },
       flag: c.flag.emoji,
     }));
